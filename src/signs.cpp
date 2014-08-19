@@ -122,7 +122,7 @@ void CannyThreshold(int, void*)
 
 
 
-int main_(int argc, char** argv)
+int main__(int argc, char** argv)
 {
 	// check http://docs.opencv.org/doc/tutorials/features2d/table_of_content_features2d/table_of_content_features2d.html
 	// for OpenCV general detection/matching framework details

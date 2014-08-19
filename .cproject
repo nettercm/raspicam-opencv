@@ -29,6 +29,7 @@
 									<listOptionValue builtIn="false" value="D:\SDK\pi-gcc\arm-linux-gnueabihf\sysroot\opt\vc\include\interface\vcos\pthreads"/>
 									<listOptionValue builtIn="false" value="D:\SDK\pi-gcc\arm-linux-gnueabihf\sysroot\opt\vc\include\interface\vmcs_host\linux"/>
 								</option>
+								<option id="gnu.c.compiler.option.dialect.std.1980159220" superClass="gnu.c.compiler.option.dialect.std" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1482777421" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.2045987666" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
