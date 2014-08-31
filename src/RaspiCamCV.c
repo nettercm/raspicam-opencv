@@ -68,7 +68,7 @@ VCOS_LOG_CAT_T raspitex_log_category = VCOS_LOG_INIT("RaspiCV", VCOS_LOG_TRACE);
 //#define MMAL_CAMERA_CAPTURE_PORT 2
 
 // Video format information
-#define VIDEO_FRAME_RATE_NUM 10
+#define VIDEO_FRAME_RATE_NUM 30
 #define VIDEO_FRAME_RATE_DEN 1
 
 /// Video render needs at least 2 buffers.
@@ -261,7 +261,7 @@ int counter = 0;
 
 static void video_buffer_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
 {
-	fprintf(stderr,"#");fflush(stderr);
+	//fprintf(stderr,"#");fflush(stderr);
 
 	MMAL_BUFFER_HEADER_T *new_buffer;
 	RASPIVID_STATE * state = (RASPIVID_STATE *)port->userdata;
@@ -299,11 +299,11 @@ static void video_buffer_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffe
 				memcpy(state->pv->imageData,buffer->data+w*h+w*h4,w*h4); // read v
 			}
 
-			fprintf(stderr,"a");fflush(stderr);
+			//fprintf(stderr,"a");fflush(stderr);
 			vcos_semaphore_post(&state->capture_done_sem);
-			fprintf(stderr,"b");fflush(stderr);
+			//fprintf(stderr,"b");fflush(stderr);
 			vcos_semaphore_wait(&state->capture_sem);
-			fprintf(stderr,"c");fflush(stderr);
+			//fprintf(stderr,"c");fflush(stderr);
 
 			mmal_buffer_header_mem_unlock(buffer);
 		}
@@ -557,10 +557,10 @@ static void destroy_camera_component(RASPIVID_STATE *state)
 */
 static void encoder_buffer_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
 {
-	fprintf(stderr,"*");fflush(stderr);
-	//printf("Called...");
 	MMAL_BUFFER_HEADER_T *new_buffer;
 	static int64_t base_time =  -1;
+
+	//fprintf(stderr,"*");fflush(stderr);
 
 	// All our segment times based on the receipt of the first encoder callback
 	if (base_time == -1)
@@ -1158,15 +1158,15 @@ int counter2 = 0;
 
 IplImage * raspiCamCvQueryFrame_New(RaspiCamCvCapture * capture, int mode)
 {
-	fprintf(stderr,"-");fflush(stderr);
+	//fprintf(stderr,"-");fflush(stderr);
 
 	RASPIVID_STATE * state = capture->pState;
 
-	fprintf(stderr,"A");fflush(stderr);
+	//fprintf(stderr,"A");fflush(stderr);
 	vcos_semaphore_post(&state->capture_sem);
-	fprintf(stderr,"B");fflush(stderr);
+	//fprintf(stderr,"B");fflush(stderr);
 	vcos_semaphore_wait(&state->capture_done_sem);
-	fprintf(stderr,"C");fflush(stderr);
+	//fprintf(stderr,"C");fflush(stderr);
 
 	counter2++;
 	//printf("video_buffer_callback: %d\tFrames: %d\n", counter, counter2);

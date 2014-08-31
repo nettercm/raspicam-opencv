@@ -1,9 +1,21 @@
 #include "RaspiCamCV.h"
 
+
 #include <stdio.h>
-#include <stdlib.h>
+#include <memory.h>
+#include <sys/mman.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <time.h>
+#include <memory.h>
+#include <math.h>
+#include <termio.h>
+#include <termios.h>
 #include <unistd.h>
-#include <string.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -35,6 +47,15 @@ int main(int argc, char *argv[])
 	long double waitTime = 1;
 	int mode = 0; //2;
 
+#if 1
+	struct sched_param sp;
+	memset(&sp, 0, sizeof(sp));
+	sp.sched_priority = sched_get_priority_max(SCHED_FIFO);
+	sched_setscheduler(0, SCHED_FIFO, &sp);
+	//mlockall(MCL_CURRENT | MCL_FUTURE); //doesn't make much of a difference
+	printf("result = %d\n",	setpriority(PRIO_PROCESS, 0, sched_get_priority_max(SCHED_FIFO)));
+#endif
+
 	fprintf(stderr,"test\n");fflush(stderr);
 	usleep(500000);
 	fprintf(stderr,"test\n");fflush(stderr);
@@ -46,17 +67,22 @@ int main(int argc, char *argv[])
 
 	char key = (char)waitKey(1); //delay N millis, usually long enough to display and capture input
 
+	double t = (double)getTickCount();
 	while (1) 
 	{
 		i++;
+		t = ((double)getTickCount() - t)/getTickFrequency();
+		printf("%f\n",t); fflush(stdout);
+		t = (double)getTickCount();
+
 		rgb_frame = raspiCamCvQueryFrame_New(capture, mode);
 		cvtColor(rgb_frame,hsv_frame,COLOR_RGB2HSV);
-		fprintf(stderr,"\n.");fflush(stderr);
-		if(i>=10)
+		fprintf(stderr,".");fflush(stderr);
+		if(i>=0)
 		{
 			i=0;
-			//imshow("RGB",rgb_frame);
-			//imshow("HSV",hsv_frame);
+			imshow("RGB",rgb_frame);
+			imshow("HSV",hsv_frame);
 		}
 		char key = (char)waitKey(1); //delay N millis, usually long enough to display and capture input
 	}
